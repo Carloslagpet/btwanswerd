@@ -23,7 +23,7 @@ class ApiService:
             print(f"Error fetching data from API: {response.status_code}", file=stderr)
 
 
-def todo_to_csv(self, todo):
+    def todo_to_csv(self, todo):
         todo_id = todo['id']
         filename = f"{datetime.now().strftime('%Y_%m_%d')}_{todo_id}.csv"
         with open(os.path.join('storage', filename), 'w', newline='') as csvfile:
