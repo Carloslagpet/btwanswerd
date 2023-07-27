@@ -26,7 +26,13 @@ class ApiService:
     def todo_to_csv(self, todo):
         todo_id = todo['id']
         filename = f"{datetime.now().strftime('%Y_%m_%d')}_{todo_id}.csv"
-        with open(os.path.join('storage', filename), 'w', newline='') as csvfile:
+        storage_dir = 'storage'
+
+        # create the storage directory if it does not exist
+        if not os.path.exists(storage_dir):
+            os.makedirs(storage_dir)
+
+        with open(os.path.join(storage_dir, filename), 'w', newline='') as csvfile:
             fieldnames = ['userId', 'id', 'title', 'completed']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
