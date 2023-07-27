@@ -1,4 +1,8 @@
 from sys import stderr
+import os
+import requests
+from datetime import datetime
+import csv
 
 
 class ApiService:
@@ -8,4 +12,22 @@ class ApiService:
     def run(self):
         print('Running ApiService', file=stderr)
 
-        # TODO: follow README.md instructions
+        url = 'https://jsonplaceholder.typicode.com/todos/'
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            todos = response.json()
+            for todo in todos:
+                self.todo_to_csv(todo)
+        else:
+            print(f"Error fetching data from API: {response.status_code}", file=stderr)
+
+
+def todo_to_csv(self, todo):
+        todo_id = todo['id']
+        filename = f"{datetime.now().strftime('%Y_%m_%d')}_{todo_id}.csv"
+        with open(os.path.join('storage', filename), 'w', newline='') as csvfile:
+            fieldnames = ['userId', 'id', 'title', 'completed']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerow(todo)
